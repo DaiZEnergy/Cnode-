@@ -1,0 +1,133 @@
+<% include ./layout/header.html%>
+<div id="main">
+<% include ./layout/sidebar.html%>
+
+
+<div id="content">
+  <div class="panel">
+    <div class="header">
+      
+        <a href="/?tab=all" class="topic-tab current-tab">全部</a>
+      
+        <a href="/?tab=good" class="topic-tab ">精华</a>
+      
+        <a href="/?tab=share" class="topic-tab ">分享</a>
+      
+        <a href="/?tab=ask" class="topic-tab ">问答</a>
+      
+        <a href="/?tab=job" class="topic-tab ">招聘</a>
+      
+        <a href="/?tab=dev" class="topic-tab ">客户端测试</a>
+      
+    </div>
+    
+    <div class="inner no-padding">
+ <% topicData.forEach(function(item){%>
+
+ 
+      <div id="topic_list">
+      <div class="cell">
+
+      <a class="user_avatar pull-left" href="/user/liaoyinglong">
+     <img src="/uploads/<%=item.uid.userpic%>" title="liaoyinglong">
+    </a>
+
+    <span class="reply_count pull-left">
+    <span class="count_of_replies" title="回复数">
+      9
+    </span>
+    <span class="count_seperator">/</span>
+    <span class="count_of_visits" title="点击数">
+      512
+    </span>
+  </span>
+
+  
+  <a class="last_time pull-right" href="/">
+    <img class="user_small_avatar" src="/uploads/<%=item.lastreplyuser.userpic%>">
+    <span class="last_active_time"><%=getTime(item.lastreplytime)%></span>
+  </a>
+  
+  
+
+  <div class="topic_title_wrapper">
+
+    
+<span class="topiclist-tab">问答</span>
+
+
+
+    <a class="topic_title" href="/topic/show/<%=item._id%>" title="<%-item.content%>">
+     <%-item.title%>
+    </a>
+  </div>
+</div>
+
+</div>
+<%})%>
+
+
+<div class="pagination" current_page="1">
+  <ul>
+<%if(page==1){%>    
+    <li class="disabled"><a>«</a></li>
+<%}else{%>
+    <li class="disabled"><a href="/?page=1">«</a></li>
+<%}%>
+
+<%if(page>=4){%>
+    <li class="disabled"><a>...</a></li>
+<%}%>
+    
+<%
+  var p=parseInt(page)+2;
+  if(p<5){
+    p=5
+  }
+%>
+    
+<%
+ <!-- 每次点击重新循环五位数 -->
+for(var i=page-2;i<=p;i++){
+    if(i<1||i>pageMax){
+        continue;
+
+    }
+  %>
+<!--  当page小于3的时候输出1-5 -->
+    <li><a href="/?page=<%=i%>"><%=i%></a></li>
+ <%}%>   
+    
+
+<%if(parseInt(page)<=pageMax-2){%>
+    <li class="disabled"><a>...</a></li>
+<%}%>
+    
+    <li><a href="/?page=<%=pageMax%>">»</a></li>
+
+</div>
+
+<script>
+  $(document).ready(function () {
+    var $nav = $('.pagination');
+    var current_page = $nav.attr('current_page');
+    if (current_page) {
+      $nav.find('li').each(function () {
+        var $li = $(this);
+        var $a = $li.find('a');
+        if ($a.html() == current_page) {
+          $li.addClass('active');
+          $a.removeAttr('href');
+        }
+      });
+    }
+  });
+</script>
+
+    </div>
+    
+  </div>
+</div>
+
+</div>
+<% include ./layout/footer.html%>
